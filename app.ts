@@ -5,6 +5,8 @@ import sequelize from "./db";
 import * as AdminJSSequelize from "@adminjs/sequelize";
 import { Category } from "./src/model/category.entity";
 import { Service } from "./src/model/service.entity";
+import { User } from "./src/model/user.entity";
+import { generateResource } from "./src/services/resourceModel";
 
 require("dotenv").config();
 
@@ -15,37 +17,40 @@ AdminJS.registerAdapter({
   Database: AdminJSSequelize.Database,
 });
 
-const generateResource = (model: object) => {
-    return {
-        resource: model,
-        options: {
-          properties: {
-            createdAt: {
-              isVisible: {
-                list: true,
-                edit: false,
-                create: false,
-                show: true,
-              },
-            },
-            updatedAt: {
-              isVisible: {
-                list: true,
-                edit: false,
-                create: false,
-                show: true,
-              },
-            },
-          },
-        },
-    };
-};
-
 const start = async () => {
   const adminOptions = {
     resources: [
       generateResource(Service),
       generateResource(Category),
+      generateResource(
+        User,
+        {
+          encryptedPassword: {
+            isVisible: {
+              list: false,
+              edit: true,
+              create: true,
+              show: false,
+            },
+          },
+        },
+        {
+          new: {
+            before: async function (request: any) {
+              console.log("Salvando");
+
+              return request;
+            },
+          },
+          edit: {
+            before: async function (request: any) {
+              console.log("Salvando");
+
+              return request;
+            },
+          },
+        }
+      ),
     ],
     rootPath: "/admin",
     dashboard: {
@@ -63,7 +68,7 @@ const start = async () => {
 
   sequelize
     .sync()
-    .then((result) => console.log(result))
+    .then((result) => console.log(""))
     .catch((err) => console.log(err));
 
   app.use("/img", express.static("src/assets/img"));
