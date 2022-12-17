@@ -7,6 +7,7 @@ import { Category } from "./src/model/category.entity";
 import { Service } from "./src/model/service.entity";
 import { User } from "./src/model/user.entity";
 import { generateResource } from "./src/services/resourceModel";
+import bcrypt from "bcrypt";
 
 require("dotenv").config();
 
@@ -25,7 +26,8 @@ const start = async () => {
       generateResource(
         User,
         {
-          encryptedPassword: {
+          password: {
+            type: "password",
             isVisible: {
               list: false,
               edit: true,
@@ -37,15 +39,28 @@ const start = async () => {
         {
           new: {
             before: async function (request: any) {
-              console.log("Salvando");
-
+              if (request.payload.password) {
+                request.payload.password = await bcrypt.hash(
+                  request.payload.password,
+                  10
+                );
+              }
               return request;
             },
           },
           edit: {
             before: async function (request: any) {
-              console.log("Salvando");
-
+              if (request.payload.password) {
+                if (
+                  request.payload.password.indexOf("$2b$10") === -1 &&
+                  request.payload.password.length < 40
+                ) {
+                  request.payload.password = await bcrypt.hash(
+                    request.payload.password,
+                    10
+                  );
+                }
+              }
               return request;
             },
           },

@@ -6,7 +6,7 @@ interface IUser{
     name: string;
     email: string;
     username: string;
-    encryptedPassword: string;
+    password: string;
     role: string;
     createdAt: Date;
     updatedAt: Date;
@@ -19,7 +19,7 @@ export class User extends Model<IUser, UserCreationAttributes>{
     declare name: string | null;
     declare email: string | null;
     declare username: string | null;
-    declare encryptedPassword: string | null;
+    declare password: string | null;
     declare role: string | null;
     declare createdAt: Date | null;
     declare updatedAt: Date | null;
@@ -44,7 +44,7 @@ User.init(
             type: DataTypes.STRING(30),
             allowNull: false
         },
-        encryptedPassword: {
+        password: {
             type: DataTypes.STRING(256),
             allowNull: false
         },
