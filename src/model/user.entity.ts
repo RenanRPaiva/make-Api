@@ -8,6 +8,8 @@ interface IUser{
     username: string;
     password: string;
     role: string;
+    active: number;
+    pin: string;
     createdAt: Date;
     updatedAt: Date;
 };
@@ -21,6 +23,8 @@ export class User extends Model<IUser, UserCreationAttributes>{
     declare username: string | null;
     declare password: string | null;
     declare role: string | null;
+    declare active: number | null;
+    declare pin: string | null;
     declare createdAt: Date | null;
     declare updatedAt: Date | null;
 };
@@ -52,6 +56,14 @@ User.init(
             type: DataTypes.ENUM('admin', 'user'),
             allowNull: false,
             defaultValue: 'user'                      
+        },
+        active: {
+            type: DataTypes.INTEGER,
+            defaultValue: false
+        },
+        pin: {
+            type: DataTypes.STRING(4),
+            allowNull: true
         },
         createdAt: {
             type: DataTypes.DATE,

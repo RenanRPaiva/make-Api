@@ -1,5 +1,6 @@
 import AdminJS from "adminjs";
 import adminJSExpress from "@adminjs/express";
+import session from "express-session";
 import express from "express";
 import sequelize from "./db";
 import * as AdminJSSequelize from "@adminjs/sequelize";
@@ -9,6 +10,7 @@ import { User } from "./src/model/user.entity";
 import { generateResource } from "./src/services/resourceModel";
 import bcrypt from "bcrypt";
 
+const mysqlStore = require("express-mysql-session")(session);
 require("dotenv").config();
 
 const PORT = process.env.PORT_HOST;
@@ -32,6 +34,22 @@ const start = async () => {
               list: false,
               edit: true,
               create: true,
+              show: false,
+            },
+          },
+          active: {
+            isVisible: {
+              list: true,
+              edit: false,
+              create: false,
+              show: true,
+            },
+          },
+          pin: {
+            isVisible: {
+              list: false,
+              edit: false,
+              create: false,
               show: false,
             },
           },
@@ -88,7 +106,47 @@ const start = async () => {
 
   app.use("/img", express.static("src/assets/img"));
   const admin = new AdminJS(adminOptions);
-  const adminRouter = adminJSExpress.buildRouter(admin);
+  const sessionStore = new mysqlStore({
+    connectionLimit: 10,
+    password: process.env.DB_PASS,
+    user: process.env.DB_USER,
+    database: process.env.MYSQL_DB,
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    createDatabaseTable: true,
+  });
+  const adminRouter = adminJSExpress.buildAuthenticatedRouter(
+    admin,
+    {
+      authenticate: async function (email, password) {
+        const user = await User.findOne({ where: { email: email } });
+        if (user) {
+          const verifica = await bcrypt.compare(
+            password,
+            user.getDataValue("password")
+          );
+          if (verifica) {
+            return user;
+          }
+        }
+        return false;
+      },
+      cookieName: "make",
+      cookiePassword: "XyGNhDR98hMgZL0MOb7L2vZ2fdZKmsHV",
+    },
+    null,
+    {
+      store: sessionStore,
+      resave: true,
+      saveUninitialized: true,
+      secret: 'XyGNhDR98hMgZL0MOb7L2vZ2fdZKmsHV',
+      cookie: {
+          httpOnly: process.env.NODE_ENV === 'production',
+          secure: process.env.NODE_ENV === 'production'
+      },
+      name:'make',
+    }
+  );
   app.use(admin.options.rootPath, adminRouter);
 
   app.listen(PORT, () => {
