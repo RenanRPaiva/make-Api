@@ -9,10 +9,14 @@ import { Service } from "./src/model/service.entity";
 import { User } from "./src/model/user.entity";
 import { generateResource } from "./src/services/resourceModel";
 import bcrypt from "bcrypt";
+import { auth } from "./src/routes/auth"
+import hbs from 'hbs';
 
+const path = require('node:path');
 const mysqlStore = require("express-mysql-session")(session);
 require("dotenv").config();
 
+const bodyParser = require('body-parser');
 const PORT = process.env.PORT_HOST;
 
 AdminJS.registerAdapter({
@@ -147,7 +151,13 @@ const start = async () => {
       name:'make',
     }
   );
+  
+  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(express.json());
+  hbs.registerPartials(path.join(__dirname, 'views'));
+  app.set('view engine', 'hbs');
   app.use(admin.options.rootPath, adminRouter);
+  app.use("/auth", auth);
 
   app.listen(PORT, () => {
     console.log("Projeto rodando!");
