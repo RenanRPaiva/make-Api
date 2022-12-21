@@ -67,6 +67,7 @@ const start = async () => {
                   10
                 );
               }
+              // TODO: Fazer envio do e-mail ao criar usuário!
               return request;
             },
           },
@@ -152,11 +153,11 @@ const start = async () => {
     }
   );
   
-  app.use(bodyParser.urlencoded({ extended: true }));
   app.use(express.json());
   hbs.registerPartials(path.join(__dirname, 'views'));
   app.set('view engine', 'hbs');
   app.use(admin.options.rootPath, adminRouter);
+  app.use(bodyParser.urlencoded({ extended: true }));
   app.use("/auth", auth);
 
   app.listen(PORT, () => {

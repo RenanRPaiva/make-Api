@@ -5,18 +5,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;200;300;400;500;600&display=swap');
         *{
             font-family: 'Roboto Slab', serif;
         }
         form{
-            max-width: 300px;
+            max-width: 350px;
             margin: 0 auto;
         }
         /* Chrome, Safari, Edge, Opera */
-        input.number::-webkit-outer-spin-button,
-        input.number::-webkit-inner-spin-button {
+        .number input::-webkit-outer-spin-button,
+        .number input::-webkit-inner-spin-button {
           -webkit-appearance: none;
            margin: 0;
         }
@@ -28,35 +29,123 @@
         label{
             display: block;
             text-align: center;
+            margin-bottom: 10px;
         }  
         .number{
-            width: calc(25% - 2px);
-            font-size: 4em;
+            width: calc(16.66% - 2px);          
             float: left;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+        .number input{
+            width: 100%;
+            height: 70px;
+            font-size: 4em;
             text-align: center;
             margin: 0;
             padding: 0;
-            border: 1px solid #333;          
+            border: 1px solid #333;
+            border-radius: 5px;
+        }
+        .button-area{
+            padding: 5px;
         }
         button{
+            cursor: pointer;
             width: 100%;
             color: #fff;
             background-color: #333;
             padding: 10px;
             margin-top: 2em;
+            border-radius: 5px;
+            border: none;
         }
     </style>
 </head>
 <body>
-    <form action="" method="post">
+    <form>
         <div>
             <label>PIN</label>
-            <input type="number" class="number" name="v1">
-            <input type="number" class="number" name="v2">
-            <input type="number" class="number" name="v3">
-            <input type="number" class="number" name="v4">
+            <div class="number">
+                <input type="number" name="0" id="number_0">
+            </div>
+            <div class="number">
+                <input type="number" name="1" id="number_1">
+            </div>
+            <div class="number">
+                <input type="number" name="2" id="number_2">
+            </div>
+            <div class="number">
+                <input type="number" name="3" id="number_3">
+            </div>
+            <div class="number">
+                <input type="number" name="4" id="number_4">
+            </div>
+            <div class="number">
+                <input type="number" name="5" id="number_5">
+            </div>
         </div>
-        <button type="submit">Verificar</button>
+        <div class="button-area">
+            <button type="button" onclick="submitToken()">
+                <i style="display: none;" class="fas fa-sync fa-spin" id="loading"></i>
+                <i style="display: none;" class="fa-solid fa-circle-check" id="check"></i>
+                <i style="display: none;" class="fa-solid fa-circle-exclamation" id="error"></i>              
+                <span id="btn-text">Verificar</span>
+            </button>
+        </div>
     </form>
+
+    <script>
+        const numbers = document.querySelectorAll('.number input');
+        const values = [0,0,0,0,0,0];
+        const loading = document.querySelector('#loading');
+        const check = document.querySelector('#check');
+        const error = document.querySelector('#error');
+        const btnText = document.querySelector('#btn-text');
+        const button = document.querySelector('button');
+
+        numbers.forEach(number =>{
+            number.addEventListener('keyup', (event) =>{
+                let name = parseInt(event.currentTarget.name);
+                let numberV = parseInt(event.currentTarget.value);
+
+                if(numberV >= 0 && numberV < 10 || isNaN(numberV)){
+                    values[name] = numberV;
+                }
+                event.currentTarget.value = values[name];
+
+                let element = null;
+
+                if(event.currentTarget.value === ""){
+                    element = document.querySelector(`#number_${name - 1}`);
+                }else{
+                    element = document.querySelector(`#number_${name + 1}`);
+                }                
+                if(element){
+                    element.focus();
+                }
+            })
+        })
+
+        function submitToken(){
+            loading.style.removeProperty('display');
+            btnText.innerText = '';
+            button.style.backgroundColor = '#333'  
+            error.style.display = 'none';
+            check.style.display = 'none';
+
+            setTimeout(() => {
+             loading.style.display = 'none';
+             check.style.removeProperty('display');
+             btnText.innerText = 'E-mail validado com sucesso!';
+             button.style.backgroundColor = '#32CD32';
+             button.disabled = true 
+
+             {{!-- error.style.removeProperty('display');
+             btnText.innerText = 'Erro ao validar e-mail!';
+             button.style.backgroundColor = '#ff4040'; --}}
+            }, 3000)
+        }
+    </script>
 </body>
 </html>

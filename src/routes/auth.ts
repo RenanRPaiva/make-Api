@@ -6,7 +6,7 @@ auth.get('/confirme-email', (req, res)=> {
 });
 
 auth.post('/confirme-email', (req, res)=> {
-    console.log(req.body)
+    // TODO: Adicionar confirmação de e-mail!
     res.render('confirme-email')
 });
 
