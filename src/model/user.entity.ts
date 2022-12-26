@@ -62,7 +62,7 @@ User.init(
             defaultValue: false
         },
         pin: {
-            type: DataTypes.STRING(4),
+            type: DataTypes.STRING(6),
             allowNull: true
         },
         createdAt: {
