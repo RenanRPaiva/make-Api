@@ -7,7 +7,8 @@ auth.get('/confirme-email', (req, res)=> {
 
 auth.post('/confirme-email', (req, res)=> {
     // TODO: Adicionar confirmação de e-mail!
-    res.render('confirme-email')
+    res.statusCode = 200
+    res.send({  msg: 'E-mail confirmado com sucesso!' })
 });
 
 export { auth };

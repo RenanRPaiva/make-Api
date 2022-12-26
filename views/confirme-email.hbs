@@ -60,6 +60,13 @@
             border-radius: 5px;
             border: none;
         }
+        #message{
+            color: #ff4040;
+            text-align: center;
+            float: left;
+            margin-top: 1.2em;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
@@ -85,6 +92,7 @@
                 <input type="number" name="5" id="number_5">
             </div>
         </div>
+        <div id="message" style="display: none;">Digite o código PIN de 6 dígitos!</div>
         <div class="button-area">
             <button type="button" onclick="submitToken()">
                 <i style="display: none;" class="fas fa-sync fa-spin" id="loading"></i>
@@ -95,14 +103,17 @@
         </div>
     </form>
 
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         const numbers = document.querySelectorAll('.number input');
-        const values = [0,0,0,0,0,0];
+        const values = [null,null,null,null,null,null];
         const loading = document.querySelector('#loading');
         const check = document.querySelector('#check');
         const error = document.querySelector('#error');
         const btnText = document.querySelector('#btn-text');
         const button = document.querySelector('button');
+        const message = document.querySelector('#message');
+        const url = window.location.origin;
 
         numbers.forEach(number =>{
             number.addEventListener('keyup', (event) =>{
@@ -127,24 +138,54 @@
             })
         })
 
-        function submitToken(){
-            loading.style.removeProperty('display');
-            btnText.innerText = '';
-            button.style.backgroundColor = '#333'  
-            error.style.display = 'none';
-            check.style.display = 'none';
+        const submitToken = async () => {
+            const pin = values.join("");
+            console.log(pin)
+            if(pin.length === 6){
+                message.style.display = 'none';
+                loading.style.removeProperty('display');
+                btnText.innerText = '';
+                button.style.backgroundColor = '#333'  
+                error.style.display = 'none';
+                check.style.display = 'none';
 
-            setTimeout(() => {
-             loading.style.display = 'none';
-             check.style.removeProperty('display');
-             btnText.innerText = 'E-mail validado com sucesso!';
-             button.style.backgroundColor = '#32CD32';
-             button.disabled = true 
+                try{
+                    const result = await requestToken(pin);
+                    if(result.status === 200){
+                        loading.style.display = 'none';
+                        check.style.removeProperty('display');
+                        btnText.innerText = result.data.msg;
+                        button.style.backgroundColor = '#32CD32';
+                        button.disabled = true
 
-             {{!-- error.style.removeProperty('display');
-             btnText.innerText = 'Erro ao validar e-mail!';
-             button.style.backgroundColor = '#ff4040'; --}}
-            }, 3000)
+                        numbers.forEach(number => {
+                            number.value = "";
+                        })
+                    }
+                }catch(err){
+                    loading.style.display = 'none';   
+                    error.style.removeProperty('display');
+                    btnText.innerText = 'Erro ao validar e-mail!';
+                    button.style.backgroundColor = '#ff4040';
+                } 
+            }else{
+                message.style.display = 'block';
+            }
+        }
+
+        const requestToken = async (pin) => {            
+           try{
+                const result = await axios({
+                    method: 'POST',
+                    url: `${url}/auth/confirme-email`,
+                    data:{
+                        pin
+                    }
+                })
+                return result;
+           }catch(err){
+            throw err;
+           }
         }
     </script>
 </body>
