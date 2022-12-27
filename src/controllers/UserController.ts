@@ -1,6 +1,12 @@
-import { User } from "../model/user.entity"; 
+import { User } from "../model/user.entity";
+import Mail from "../utils/Mail"; 
 
 class UserController{
+    mail: Mail;
+
+    constructor(){
+        this.mail = new Mail();
+    }
     public async confirmEmail (pin: string): Promise<any>{
         let result = {
             statusCode:200,
@@ -33,8 +39,9 @@ class UserController{
         return result;
     }
 
-    public sendEmail(email: string): void{
-        // TODO: Criar Envio de e-mail com token.
+    public async sendToken(token: string, email: string): Promise<any>{
+        console.log(token)       
+        this.mail.sendEmail(email, 'Email confirmado.', 'HTML do envio de email.')
     }
 }
 

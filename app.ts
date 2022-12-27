@@ -9,20 +9,23 @@ import { Service } from "./src/model/service.entity";
 import { User } from "./src/model/user.entity";
 import { generateResource } from "./src/services/resourceModel";
 import bcrypt from "bcrypt";
-import { auth } from "./src/routes/auth"
-import hbs from 'hbs';
+import { auth } from "./src/routes/auth";
+import hbs from "hbs";
+import UserController from "./src/controllers/UserController";
 
-const path = require('node:path');
+const path = require("node:path");
 const mysqlStore = require("express-mysql-session")(session);
 require("dotenv").config();
 
-const bodyParser = require('body-parser');
+const bodyParser = require("body-parser");
 const PORT = process.env.PORT_HOST;
 
 AdminJS.registerAdapter({
   Resource: AdminJSSequelize.Resource,
   Database: AdminJSSequelize.Database,
 });
+
+const userCtrl = new UserController();
 
 const start = async () => {
   const adminOptions = {
@@ -67,7 +70,9 @@ const start = async () => {
                   10
                 );
               }
-              // TODO: Fazer envio do e-mail ao criar usuário!
+              request.payload.pin = '123456'
+              userCtrl.sendToken(request.payload.pin, request.payload.email)
+             
               return request;
             },
           },
@@ -131,7 +136,12 @@ const start = async () => {
             user.getDataValue("password")
           );
           if (verifica) {
-            return user;
+            if (user.active) {
+              return user;            
+            }else {
+              userCtrl.sendToken(user.pin, user.email)
+              return false;
+            } 
           }
         }
         return false;
@@ -144,18 +154,18 @@ const start = async () => {
       store: sessionStore,
       resave: true,
       saveUninitialized: true,
-      secret: 'XyGNhDR98hMgZL0MOb7L2vZ2fdZKmsHV',
+      secret: "XyGNhDR98hMgZL0MOb7L2vZ2fdZKmsHV",
       cookie: {
-          httpOnly: process.env.NODE_ENV === 'production',
-          secure: process.env.NODE_ENV === 'production'
+        httpOnly: process.env.NODE_ENV === "production",
+        secure: process.env.NODE_ENV === "production",
       },
-      name:'make',
+      name: "make",
     }
   );
-  
+
   app.use(express.json());
-  hbs.registerPartials(path.join(__dirname, 'views'));
-  app.set('view engine', 'hbs');
+  hbs.registerPartials(path.join(__dirname, "views"));
+  app.set("view engine", "hbs");
   app.use(admin.options.rootPath, adminRouter);
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use("/auth", auth);
