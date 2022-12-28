@@ -25,7 +25,8 @@ AdminJS.registerAdapter({
   Database: AdminJSSequelize.Database,
 });
 
-const userCtrl = new UserController();
+const ROOT_DIR = __dirname;
+const userCtrl = new UserController(ROOT_DIR);
 
 const start = async () => {
   const adminOptions = {
@@ -70,8 +71,8 @@ const start = async () => {
                   10
                 );
               }
-              request.payload.pin = '123456'
-              userCtrl.sendToken(request.payload.pin, request.payload.email)
+              request.payload.pin = (Math.floor(100000 + Math.random() * 900000)).toString();
+              userCtrl.sendToken(request.payload.pin, request.payload.email, request.payload.name)
              
               return request;
             },
@@ -139,7 +140,7 @@ const start = async () => {
             if (user.active) {
               return user;            
             }else {
-              userCtrl.sendToken(user.pin, user.email)
+              userCtrl.sendToken(user.pin, user.email, user.name)
               return false;
             } 
           }
@@ -165,7 +166,7 @@ const start = async () => {
 
   app.use(express.json());
   hbs.registerPartials(path.join(__dirname, "views"));
-  app.set("view engine", "hbs");
+  app.set("view engine", ".hbs");
   app.use(admin.options.rootPath, adminRouter);
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use("/auth", auth);

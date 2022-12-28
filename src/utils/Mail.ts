@@ -1,10 +1,13 @@
 require("dotenv").config();
 const nodemailer = require('nodemailer');
+const hbs = require('nodemailer-express-handlebars');
+const exphbs = require('exphbs');
+const { resolve } = require('path');
 
 export default class Mail{
     transporter: any;
 
-    constructor(){
+    constructor(rootDir: string | null){
         this.transporter = nodemailer.createTransport({
             port: process.env.EMAIL_PORT,
             host: process.env.EMAIL_SMTP,
@@ -14,18 +17,31 @@ export default class Mail{
             },
             secure: true
         });
+        if(rootDir){
+            const viewPath = resolve(rootDir, 'views', 'emails');
+
+            this.transporter.use('compile', hbs({
+                viewEngine: exphbs.create({
+                    defaultLayout: 'default',
+                    extname: '.hbs'
+                }),
+                viewPath,
+                extName: '.hbs'
+            }));                     
+        }
     }
 
-    async sendEmail(to: string, subject: string, html: string){
+    public async sendEmail(to: string | null, subject: string | null, template: string | null, context: any): Promise<any>{
         const data = {
             from: process.env.EMAIL,
             to,
             subject,
-            html
+            template,
+            context
         }
 
         try {
-            return  await this.transporter.sendEmail(data);
+            return await this.transporter.sendMail(data);
         } catch (err) {
             throw err;
         }

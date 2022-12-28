@@ -2,7 +2,7 @@ import * as express from 'express';
 const auth = express.Router();
 import UserController from '../controllers/UserController'; 
 
-const userCtrl = new UserController();
+const userCtrl = new UserController(null);
 
 auth.get('/confirme-email', (req, res)=> {
     res.render('confirme-email')

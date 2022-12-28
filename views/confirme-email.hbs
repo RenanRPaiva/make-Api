@@ -114,7 +114,18 @@
         const button = document.querySelector('button');
         const message = document.querySelector('#message');
         const url = window.location.origin;
+        const pin = window.location.search.split("?pin=")[1];
 
+        const loadPin = () => {
+            if(pin !== undefined){
+                for(let i = 0; i < 6; i++){
+                    document.querySelector(`#number_${i}`).value = pin[i];
+                    values[i] = pin[i];
+                }
+            }
+        }
+
+        loadPin();
         numbers.forEach(number =>{
             number.addEventListener('keyup', (event) =>{
                 let name = parseInt(event.currentTarget.name);
@@ -139,9 +150,8 @@
         })
 
         const submitToken = async () => {
-            const pin = values.join("");
-            console.log(pin)
-            if(pin.length === 6){
+            const localPin = values.join("");
+            if(localPin.length === 6){
                 message.style.display = 'none';
                 loading.style.removeProperty('display');
                 btnText.innerText = '';
@@ -150,7 +160,7 @@
                 check.style.display = 'none';
 
                 try{
-                    const result = await requestToken(pin);
+                    const result = await requestToken(localPin);
                     if(result.status === 200){
                         loading.style.display = 'none';
                         check.style.removeProperty('display');
