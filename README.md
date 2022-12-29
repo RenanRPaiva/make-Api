@@ -34,7 +34,7 @@ A dificuldade na marcação e contato com uma maquiadora, ter acesso a seus trab
 
 Conseguir ter acesso a todas essas informações em unico lugar é difícil, a Make+ vem com uma solução simples.
 
-Neste projeto foi desenvolvido um administrador para gerenciar as catedorias, serviços com seus valores e usuários.
+Neste projeto foi desenvolvido um administrador para gerenciar as categorias, serviços com seus valores e usuários.
 
 
 Os recursos disponiveis e implementados foram:
