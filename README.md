@@ -40,7 +40,7 @@ Neste projeto foi desenvolvido um administrador para gerenciar as categorias, se
 Os recursos disponiveis e implementados foram:
 
 - AdminJS criado para consumir a base de dados;
-- Possui CRUD para os Serviçoes, categorias e usuários.
+- Possui CRUD para os Serviços, categorias e usuários.
 - Possui camada de serviçes;
 - Valida por e-mail o usuário;
 - Autenticação para acesso ao adminJS para usuários e administrador;
