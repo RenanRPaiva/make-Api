@@ -2,6 +2,9 @@
 
 <br />
 <div align="center">
+  
+    <img src="https://user-images.githubusercontent.com/101148797/182475941-facfe762-91bf-405b-ba78-20bdd5db4be4.svg" alt="Logo Make" />
+  
   <h3 align="center">Make + (API)</h3>
 
    <p align="center">
