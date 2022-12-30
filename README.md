@@ -5,7 +5,7 @@
   <h3 align="center">Make + (API)</h3>
 
    <p align="center">
-    Api Admim para gerenciar cetegorias, serviços e usuários do Make +.
+    Api Admin para gerenciar cetegorias, serviços e usuários do Make +.
     <br />
   </p>
 </div>
@@ -41,7 +41,7 @@ Os recursos disponiveis e implementados foram:
 
 - AdminJS criado para consumir a base de dados;
 - Possui CRUD para os Serviços, categorias e usuários.
-- Possui camada de serviçes;
+- Possui camada de services;
 - Valida por e-mail o usuário;
 - Autenticação para acesso ao adminJS para usuários e administrador;
 
@@ -57,7 +57,7 @@ Como o foco deste projeto era o desenvolvimento do back-end, ainda será adaptad
 
 Para o Back-end:
 
-O projeto foi desenvolvido em uma API com Express utilizando Typescropt como ferramenta, listando os serviços, categorias dos serviços e usuários.
+O projeto foi desenvolvido em uma API com Express utilizando Typescript como ferramenta, listando os serviços, categorias dos serviços e usuários.
 # Como executar o projeto
 
 ## Pré-requisitos
@@ -88,7 +88,7 @@ yarn dev
 Link da API no Github: [Github](https://github.com/RenanRPaiva/make-Api)
 
 # Tecnologias utilizadas
-- Javascript
+- Typescript
 - MySQL
 - Sequelize
 - Bcrypt
