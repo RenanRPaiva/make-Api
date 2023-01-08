@@ -2,10 +2,13 @@
 
 <br />
 <div align="center">
+    <a href="https://github.com/RenanRPaiva/make-Api">
+    <img src="https://user-images.githubusercontent.com/101148797/182475941-facfe762-91bf-405b-ba78-20bdd5db4be4.svg" alt="Logo Make" />
+  </a>
   <h3 align="center">Make + (API)</h3>
 
    <p align="center">
-    Api Admim para gerenciar cetegorias, serviços e usuários do Make +.
+    Api Admin para gerenciar cetegorias, serviços e usuários do Make +.
     <br />
   </p>
 </div>
@@ -34,14 +37,14 @@ A dificuldade na marcação e contato com uma maquiadora, ter acesso a seus trab
 
 Conseguir ter acesso a todas essas informações em unico lugar é difícil, a Make+ vem com uma solução simples.
 
-Neste projeto foi desenvolvido um administrador para gerenciar as catedorias, serviços com seus valores e usuários.
+Neste projeto foi desenvolvido um administrador para gerenciar as categorias, serviços com seus valores e usuários.
 
 
 Os recursos disponiveis e implementados foram:
 
 - AdminJS criado para consumir a base de dados;
-- Possui CRUD para os Serviçoes, categorias e usuários.
-- Possui camada de serviçes;
+- Possui CRUD para os Serviços, categorias e usuários.
+- Possui camada de services;
 - Valida por e-mail o usuário;
 - Autenticação para acesso ao adminJS para usuários e administrador;
 
@@ -57,7 +60,7 @@ Como o foco deste projeto era o desenvolvimento do back-end, ainda será adaptad
 
 Para o Back-end:
 
-O projeto foi desenvolvido em uma API com Express utilizando Typescropt como ferramenta, listando os serviços, categorias dos serviços e usuários.
+O projeto foi desenvolvido em uma API com Express utilizando Typescript como ferramenta, listando os serviços, categorias dos serviços e usuários.
 # Como executar o projeto
 
 ## Pré-requisitos
@@ -88,7 +91,7 @@ yarn dev
 Link da API no Github: [Github](https://github.com/RenanRPaiva/make-Api)
 
 # Tecnologias utilizadas
-- Javascript
+- Typescript
 - MySQL
 - Sequelize
 - Bcrypt
