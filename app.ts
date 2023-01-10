@@ -10,8 +10,10 @@ import { User } from "./src/model/user.entity";
 import { generateResource } from "./src/services/resourceModel";
 import bcrypt from "bcrypt";
 import { auth } from "./src/routes/auth";
+import { dashboard } from "./src/routes/dashboard";
 import hbs from "hbs";
 import UserController from "./src/controllers/UserController";
+
 
 const path = require("node:path");
 const mysqlStore = require("express-mysql-session")(session);
@@ -170,6 +172,8 @@ const start = async () => {
   app.use(admin.options.rootPath, adminRouter);
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use("/auth", auth);
+  app.use("/dashboard", dashboard);
+
 
   app.listen(PORT, () => {
     console.log("Projeto rodando!");
