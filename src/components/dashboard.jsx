@@ -10,9 +10,9 @@ import {
   Title,
   Tooltip,
   Legend,
+  ArcElement,
 } from 'chart.js';
-import { Bar } from 'react-chartjs-2';
-import faker from 'faker';
+import { Bar, Pie } from 'react-chartjs-2';
 
 ChartJS.register(
   CategoryScale,
@@ -20,7 +20,8 @@ ChartJS.register(
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  ArcElement
 );
 
 
@@ -55,33 +56,17 @@ export const optionsUsersQuantity = {
   },
 };
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-
-export const dataUsersQuantity = {
-  labels,
-  datasets: [
-    {
-      label: 'Usuários',
-      data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
-    },
-  ],
-};
-
-
-
-
-
-
-
-
 const fetcher = (...args) => fetch(...args).then(res => res.json());
 
 const Dashboard = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [selectDate, setSelectDate] = useState("all");
-  // const { data } = useSWR('http://localhost:3000/dashboard/test', fetcher)
+  const { data: dataUsersQuantity } = useSWR('http://localhost:3000/dashboard/users/quantity', fetcher);
+  const { data: dataPorProducoes } = useSWR('http://localhost:3000/dashboard/producoes/por-servico', fetcher);
+
+
+  
   
   useEffect(() => {
     if(selectDate !== 'custom'){
@@ -129,12 +114,20 @@ const Dashboard = () => {
         </select>
       </div>
       <div>
+        {  dataUsersQuantity ? 
         <div style={col}>
-          <div style={item}><Bar options={optionsUsersQuantity} data={dataUsersQuantity} /></div>
+          <div style={item}>
+           <Bar options={optionsUsersQuantity} data={dataUsersQuantity} />
+          </div>
         </div>
+        : "" }
+        {  dataPorProducoes ? 
         <div style={col}>
-          <div style={item}>2</div>
+          <div style={item}>
+           <Pie data={dataPorProducoes} />;
+          </div>
         </div>
+        : "" }
         <div style={col}>
           <div style={item}>3</div>
         </div>
