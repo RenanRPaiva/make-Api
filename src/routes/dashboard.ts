@@ -35,26 +35,33 @@ dashboard.get('/producoes/value', (req, res)=> {
      });
 });
 
-dashboard.get('/producoes/quantity', (req, res)=> {
-    const labels: Array<string> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+dashboard.get('/categories/quantity', (req, res)=> {
+  const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
    
     res.statusCode = 200;
     res.json({ 
         labels: labels,
         datasets:[
           {
-            label: 'Produções por mês (Quantidade)',
-            data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
+            label: 'Individual',
+            data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
+            borderColor: 'rgb(255, 99, 132)',
             backgroundColor: 'rgba(255, 99, 132, 0.5)',
-          }
-        ]
+          },
+          {
+            label: 'Pacotes',
+            data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
+            borderColor: 'rgb(53, 162, 235)',
+            backgroundColor: 'rgba(53, 162, 235, 0.5)',
+          },
+        ],
      });
 });
 
 dashboard.get('/producoes/por-servico', (req, res)=> {
     res.statusCode = 200;
     res.json({ 
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        labels: ['Maquiagem', 'Penteado', 'Atendimento em festa', 'Maquiagem + Cachos', 'Maquiagem + Penteado', 'Noiva/Debutante Maquiagem + Penteado'],
         datasets: [
             {
             label: '# of Votes',
@@ -80,4 +87,22 @@ dashboard.get('/producoes/por-servico', (req, res)=> {
         ],
      });
 });
+
+dashboard.get('/producoes/quantity', (req, res)=> {
+   
+  res.statusCode = 200;
+  res.json({
+    labels: ['Maquiagem', 'Penteado', 'Atendimento em festa', 'Maquiagem + Cachos', 'Maquiagem + Penteado', 'Noiva/Debutante Maquiagem + Penteado'],
+    datasets: [
+      {
+        label: 'Produções mais contratada (R$)',
+        data: [5, 8, 3, 5, 9, 12],
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        borderColor: 'rgba(255, 99, 132, 1)',
+        borderWidth: 1,
+      },
+    ],
+   });   
+});
+
 export { dashboard };

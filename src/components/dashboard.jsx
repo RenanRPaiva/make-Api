@@ -6,18 +6,26 @@ import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
+  RadialLinearScale,
   BarElement,
+  PointElement,
+  LineElement,
+  Filler,
   Title,
   Tooltip,
   Legend,
   ArcElement,
 } from 'chart.js';
-import { Bar, Pie } from 'react-chartjs-2';
+import { Bar, Pie, Radar, Line } from 'react-chartjs-2';
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
+  RadialLinearScale,
   BarElement,
+  PointElement,
+  LineElement,
+  Filler,
   Title,
   Tooltip,
   Legend,
@@ -56,6 +64,33 @@ export const optionsUsersQuantity = {
   },
 };
 
+export const optionsProducoesQuantity = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      position: 'top',
+    },
+    title: {
+      display: true,
+      text: 'Produções por mês (Qtd)',
+    },
+  },
+};
+
+export const optionsCategories = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: 'top',
+    },
+    title: {
+      display: true,
+      text: 'Categorias por mês (Qtd)',
+    },
+  },
+};
+
 const fetcher = (...args) => fetch(...args).then(res => res.json());
 
 const Dashboard = () => {
@@ -64,6 +99,13 @@ const Dashboard = () => {
   const [selectDate, setSelectDate] = useState("all");
   const { data: dataUsersQuantity } = useSWR('http://localhost:3000/dashboard/users/quantity', fetcher);
   const { data: dataPorProducoes } = useSWR('http://localhost:3000/dashboard/producoes/por-servico', fetcher);
+  const { data: dataProducoesQuantity } = useSWR('http://localhost:3000/dashboard/producoes/quantity', fetcher);
+  const { data: dataPorvalues } = useSWR('http://localhost:3000/dashboard/producoes/value', fetcher);
+  const { data: dataCategoriesQuantity } = useSWR('http://localhost:3000/dashboard/categories/quantity', fetcher);
+
+  
+  
+  
 
 
   
@@ -114,29 +156,58 @@ const Dashboard = () => {
         </select>
       </div>
       <div>
-        {  dataUsersQuantity ? 
+         
         <div style={col}>
           <div style={item}>
+          {  dataUsersQuantity ?
            <Bar options={optionsUsersQuantity} data={dataUsersQuantity} />
+          : "Não há dados para esse dashboard." }
           </div>
-        </div>
-        : "" }
-        {  dataPorProducoes ? 
+        </div>        
+        <div style={col}>
+          <div style={item}>{  dataPorvalues ?
+           <Bar data={dataPorvalues} />
+          : "Não há dados para esse dashboard." }</div>
+        </div>       
+        
         <div style={col}>
           <div style={item}>
-           <Pie data={dataPorProducoes} />;
+          {  dataProducoesQuantity ? 
+              <Radar 
+               data={dataProducoesQuantity}
+                width={300}
+                height={300}
+                options={{
+                  maintainAspectRatio: false
+                }}                
+              />              
+            : "Não há dados para esse dashboard." }
+            </div>
+        </div>
+        <div style={col}>
+          <div style={item}>
+          {  dataPorProducoes ? 
+            <Pie
+            options={optionsProducoesQuantity}
+              width={300}
+              height={300}
+              data={dataPorProducoes}   
+            />
+          : "Não há dados para esse dashboard." }
           </div>
         </div>
-        : "" }
         <div style={col}>
-          <div style={item}>3</div>
-        </div>
-        <div style={col}>
-          <div style={item}>4</div>
-        </div>       
+          <div style={item}>
+          {  dataCategoriesQuantity ?
+           <Line options={optionsCategories} data={dataCategoriesQuantity} />
+          : "Não há dados para esse dashboard." }
+          </div>
+        </div>        
       </div>
     </div>
   );
 };
+
+
 
 export default Dashboard;
