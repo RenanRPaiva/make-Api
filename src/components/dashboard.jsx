@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import moment from "moment";
 import useSWR from 'swr';
-
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -97,18 +96,11 @@ const Dashboard = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [selectDate, setSelectDate] = useState("all");
-  const { data: dataUsersQuantity } = useSWR('http://localhost:3000/dashboard/users/quantity', fetcher);
-  const { data: dataPorProducoes } = useSWR('http://localhost:3000/dashboard/producoes/por-servico', fetcher);
-  const { data: dataProducoesQuantity } = useSWR('http://localhost:3000/dashboard/producoes/quantity', fetcher);
-  const { data: dataPorvalues } = useSWR('http://localhost:3000/dashboard/producoes/value', fetcher);
-  const { data: dataCategoriesQuantity } = useSWR('http://localhost:3000/dashboard/categories/quantity', fetcher);
-
-  
-  
-  
-
-
-  
+  const { data: dataUsersQuantity } = useSWR(`http://localhost:3000/dashboard/users/quantity?start_date=${startDate}&end_date=${endDate}&select_date=${selectDate}`, fetcher);
+  const { data: dataPorProducoes } = useSWR(`http://localhost:3000/dashboard/producoes/por-servico?start_date=${startDate}&end_date=${endDate}&select_date=${selectDate}`, fetcher);
+  const { data: dataProducoesQuantity } = useSWR(`http://localhost:3000/dashboard/producoes/quantity?start_date=${startDate}&end_date=${endDate}&select_date=${selectDate}`, fetcher);
+  const { data: dataPorvalues } = useSWR(`http://localhost:3000/dashboard/producoes/value?start_date=${startDate}&end_date=${endDate}&select_date=${selectDate}`, fetcher);
+  const { data: dataCategoriesQuantity } = useSWR(`http://localhost:3000/dashboard/categories/quantity?start_date=${startDate}&end_date=${endDate}&select_date=${selectDate}`, fetcher);
   
   useEffect(() => {
     if(selectDate !== 'custom'){
@@ -196,7 +188,10 @@ const Dashboard = () => {
           : "Não há dados para esse dashboard." }
           </div>
         </div>
-        <div style={col}>
+        <div style={{
+          ...col,
+          width: '100%'
+        }}>
           <div style={item}>
           {  dataCategoriesQuantity ?
            <Line options={optionsCategories} data={dataCategoriesQuantity} />
