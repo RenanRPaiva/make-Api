@@ -2,7 +2,7 @@ import AdminJS from "adminjs";
 import adminJSExpress from "@adminjs/express";
 import session from "express-session";
 import express from "express";
-import sequelize from "./db";
+import { sequelize, mongooseDb }from "./db";
 import * as AdminJSSequelize from "@adminjs/sequelize";
 import { Category } from "./src/model/category.entity";
 import { Service } from "./src/model/service.entity";
@@ -116,6 +116,10 @@ const start = async () => {
     .sync()
     .then((result) => console.log(""))
     .catch((err) => console.log(err));
+  
+  mongooseDb.once("open", () => {
+    console.log("Conexão ao mongo aberta com sucesso.")
+  })
 
   app.use("/img", express.static("src/assets/img"));
   const admin = new AdminJS(adminOptions);
