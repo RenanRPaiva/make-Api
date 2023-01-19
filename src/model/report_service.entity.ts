@@ -1,12 +1,17 @@
-const mongoose = require("mongoose");
-const { Schema } = mongoose;
+import { model, Schema } from 'mongoose'
 
-const reportServiceSchema = new Schema({
-    name: String,
-    value: Number,
-    date: Date,
-});
+export interface IReportService {
+    name: String;
+    value: Number;
+    date: Date;
+}
+export const ReportServiceSchema = new Schema<IReportService>(
+    {
+        name: { type: 'String', required: true },
+        value: { type: 'Number', required: true },
+        date: { type: 'Date', required: true },
+    },
+    { timestamps: true },
+)
 
-const ReportService = mongoose.model('report_service', reportServiceSchema);
-
-export default ReportService;
+export const ReportService = model<IReportService>('ReportService', ReportServiceSchema);

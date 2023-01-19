@@ -4,6 +4,7 @@ import session from "express-session";
 import express from "express";
 import { sequelize, mongooseDb }from "./db";
 import * as AdminJSSequelize from "@adminjs/sequelize";
+import * as AdminJSMongoose from '@adminjs/mongoose';
 import { Category } from "./src/model/category.entity";
 import { Service } from "./src/model/service.entity";
 import { User } from "./src/model/user.entity";
@@ -13,6 +14,9 @@ import { auth } from "./src/routes/auth";
 import { dashboard } from "./src/routes/dashboard";
 import hbs from "hbs";
 import UserController from "./src/controllers/UserController";
+import { ReportService } from "./src/model/report_service.entity";
+import { ReportUser } from "./src/model/report_user.entity";
+import { ReportCategory } from "./src/model/report_category.entity";
 
 
 const path = require("node:path");
@@ -27,6 +31,11 @@ AdminJS.registerAdapter({
   Database: AdminJSSequelize.Database,
 });
 
+AdminJS.registerAdapter({
+  Resource: AdminJSMongoose.Resource,
+  Database: AdminJSMongoose.Database,
+});
+
 const ROOT_DIR = __dirname;
 const userCtrl = new UserController(ROOT_DIR);
 
@@ -35,6 +44,9 @@ const start = async () => {
     resources: [
       generateResource(Service),
       generateResource(Category),
+      generateResource(ReportService),
+      generateResource(ReportUser),
+      generateResource(ReportCategory),
       generateResource(
         User,
         {
