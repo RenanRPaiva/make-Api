@@ -1,5 +1,7 @@
 import * as express from 'express';
 import faker from 'faker';
+import CategoryController from '../controllers/CategoryController';
+import ServiceController from '../controllers/ServiceController';
 
 const dashboard = express.Router();
 
@@ -35,37 +37,46 @@ dashboard.get('/producoes/value', (req, res)=> {
      });
 });
 
-dashboard.get('/categories/quantity', (req, res)=> {
+dashboard.get('/categories/quantity', async (req, res)=> {
   const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-   
+  const categoryCtrl = new CategoryController();
+  const result = await categoryCtrl.get();
+  const data = result.map(r => r.sum);
+  const label = result.map(r => r._id);
+
     res.statusCode = 200;
     res.json({ 
         labels: labels,
         datasets:[
           {
-            label: 'Individual',
-            data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
-            borderColor: 'rgb(255, 99, 132)',
-            backgroundColor: 'rgba(255, 99, 132, 0.5)',
-          },
-          {
-            label: 'Pacotes',
-            data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
-            borderColor: 'rgb(53, 162, 235)',
-            backgroundColor: 'rgba(53, 162, 235, 0.5)',
-          },
+            label,
+            data,
+            borderColor: [
+              'rgb(255, 99, 132)',
+              'rgb(53, 162, 235)',
+            ],
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(53, 162, 235, 0.5)'
+            ],
+          }          
         ],
      });
 });
 
-dashboard.get('/producoes/por-servico', (req, res)=> {
+dashboard.get('/producoes/por-servico', async (req, res)=> {
+    const serviceCtrl = new ServiceController();
+    const result = await serviceCtrl.get(req.query);    
+    const data = result.map(r => r.sum_qtd);
+    const labels = result.map(r => r._id);
+
     res.statusCode = 200;
     res.json({ 
-        labels: ['Maquiagem', 'Penteado', 'Atendimento em festa', 'Maquiagem + Cachos', 'Maquiagem + Penteado', 'Noiva/Debutante Maquiagem + Penteado'],
+        labels,
         datasets: [
             {
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
+            label: 'Quantidade de Produções',
+            data,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -88,15 +99,19 @@ dashboard.get('/producoes/por-servico', (req, res)=> {
      });
 });
 
-dashboard.get('/producoes/quantity', (req, res)=> {
-   
+dashboard.get('/producoes/quantity', async (req: any, res)=> {
+  const serviceCtrl = new ServiceController();
+  const result = await serviceCtrl.get(req.query);  
+  const data = result.map(r => r.sum);
+  const labels = result.map(r => r._id);
+
   res.statusCode = 200;
   res.json({
-    labels: ['Maquiagem', 'Penteado', 'Atendimento em festa', 'Maquiagem + Cachos', 'Maquiagem + Penteado', 'Noiva/Debutante Maquiagem + Penteado'],
+    labels,
     datasets: [
       {
-        label: 'Produções mais contratada (R$)',
-        data: [5, 8, 3, 5, 9, 12],
+        label: 'Produções (R$)',
+        data,
         backgroundColor: 'rgba(255, 99, 132, 0.2)',
         borderColor: 'rgba(255, 99, 132, 1)',
         borderWidth: 1,

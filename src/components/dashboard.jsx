@@ -72,7 +72,7 @@ export const optionsProducoesQuantity = {
     },
     title: {
       display: true,
-      text: 'Produções por mês (Qtd)',
+      text: 'Produções (Qtd)',
     },
   },
 };
