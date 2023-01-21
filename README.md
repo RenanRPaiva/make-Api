@@ -8,7 +8,7 @@
   <h3 align="center">Make + (API)</h3>
 
    <p align="center">
-    Api Admin para gerenciar cetegorias, serviços e usuários do Make +.
+    Api Admin com Mongoose para gerenciar cetegorias, serviços e usuários do Make +.
     <br />
   </p>
 </div>
@@ -42,7 +42,7 @@ Neste projeto foi desenvolvido um administrador para gerenciar as categorias, se
 
 Os recursos disponiveis e implementados foram:
 
-- AdminJS criado para consumir a base de dados;
+- AdminJS criado para consumir a base de dados Mysql e Mongoose;
 - Possui CRUD para os Serviços, categorias e usuários.
 - Possui camada de services;
 - Valida por e-mail o usuário;
@@ -93,6 +93,9 @@ Link da API no Github: [Github](https://github.com/RenanRPaiva/make-Api)
 # Tecnologias utilizadas
 - Typescript
 - MySQL
+- Mongoose
+- ChartJS
+- Moment
 - Sequelize
 - Bcrypt
 - AdminJS
