@@ -1,7 +1,7 @@
 import { ReportCategory } from "../model/report_category.entity";
 
 
-class CategoryController{
+class ReportCategoryController{
     constructor(){
     }   
 
@@ -24,4 +24,4 @@ class CategoryController{
     }
 }
 
-export default CategoryController;
+export default ReportCategoryController;

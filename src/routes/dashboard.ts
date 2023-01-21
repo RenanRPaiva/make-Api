@@ -1,7 +1,7 @@
 import * as express from 'express';
 import faker from 'faker';
-import CategoryController from '../controllers/CategoryController';
-import ServiceController from '../controllers/ServiceController';
+import ReportCategoryController from '../controllers/ReportCategoryController';
+import ReportServiceController from '../controllers/ReportServiceController';
 
 const dashboard = express.Router();
 
@@ -39,7 +39,7 @@ dashboard.get('/producoes/value', (req, res)=> {
 
 dashboard.get('/categories/quantity', async (req, res)=> {
   const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-  const categoryCtrl = new CategoryController();
+  const categoryCtrl = new ReportCategoryController();
   const result = await categoryCtrl.get();
   const data = result.map(r => r.sum);
   const label = result.map(r => r._id);
@@ -65,7 +65,7 @@ dashboard.get('/categories/quantity', async (req, res)=> {
 });
 
 dashboard.get('/producoes/por-servico', async (req, res)=> {
-    const serviceCtrl = new ServiceController();
+    const serviceCtrl = new ReportServiceController();
     const result = await serviceCtrl.get(req.query);    
     const data = result.map(r => r.sum_qtd);
     const labels = result.map(r => r._id);
@@ -100,7 +100,7 @@ dashboard.get('/producoes/por-servico', async (req, res)=> {
 });
 
 dashboard.get('/producoes/quantity', async (req: any, res)=> {
-  const serviceCtrl = new ServiceController();
+  const serviceCtrl = new ReportServiceController();
   const result = await serviceCtrl.get(req.query);  
   const data = result.map(r => r.sum);
   const labels = result.map(r => r._id);

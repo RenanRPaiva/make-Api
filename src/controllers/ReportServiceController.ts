@@ -1,7 +1,7 @@
 import { ReportService } from "../model/report_service.entity";
 import moment from "moment";
 
-class ServiceController {
+class ReportServiceController {
   constructor() {}
 
   async get(query: any) {
@@ -61,4 +61,4 @@ class ServiceController {
   }
 }
 
-export default ServiceController;
+export default ReportServiceController;
