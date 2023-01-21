@@ -1,7 +1,7 @@
-import { ReportCategory } from "../model/report_category.entity";
+import { ReportService } from "../model/report_service.entity";
 import moment from "moment";
 
-class ReportCategoryController {
+class ReportServiceMesController {
   constructor() {}
 
   async get(query: any) {
@@ -14,9 +14,9 @@ class ReportCategoryController {
     ) {
       match = {
         $match: {
-          date: {
-            $gte: new Date(query.start_date),
-            $lte: new Date(query.end_date),
+          "date": {
+            "$gte": new Date(query.start_date),
+            "$lte": new Date(query.end_date),
           },
         },
       };
@@ -25,9 +25,9 @@ class ReportCategoryController {
         .subtract(parseInt(query.select_date), "d")
         .format("YYYY-MM-DD");
       match = {
-        $match: {
-          date: {
-            $gte: new Date(dateFrom),
+        "$match": {
+          "date": {
+            "$gte": new Date(dateFrom),
           },
         },
       };
@@ -39,21 +39,21 @@ class ReportCategoryController {
     }
 
     params.push({
-      $group: {
-        _id: "$name",
-        sum: {
-          $sum: {
-            $toInt: "$value",
+      "$group": {
+        "_id": "$date",
+        "sum": {
+          "$sum": {
+            "$toInt": "$value",
           },
-        }
+        }        
       },
     });
     params.push({
-      $sort: { sum: -1 },
+      "$sort": { "_id": 1 },
     });
 
-    return await ReportCategory.aggregate(params);
+    return await ReportService.aggregate(params);
   }
 }
 
-export default ReportCategoryController;
+export default ReportServiceMesController;

@@ -15,7 +15,7 @@ import {
   Legend,
   ArcElement,
 } from 'chart.js';
-import { Bar, Pie, Radar, Line } from 'react-chartjs-2';
+import { Bar, Pie, Radar } from 'react-chartjs-2';
 
 ChartJS.register(
   CategoryScale,
@@ -85,7 +85,7 @@ export const optionsCategories = {
     },
     title: {
       display: true,
-      text: 'Categorias por mês (Qtd)',
+      text: 'Produções por Categoria (Qtd)',
     },
   },
 };
@@ -194,7 +194,7 @@ const Dashboard = () => {
         }}>
           <div style={item}>
           {  dataCategoriesQuantity ?
-           <Line options={optionsCategories} data={dataCategoriesQuantity} />
+           <Pie options={optionsCategories} data={dataCategoriesQuantity} />
           : "Não há dados para esse dashboard." }
           </div>
         </div>        
