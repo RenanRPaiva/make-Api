@@ -1,5 +1,4 @@
 import * as express from 'express';
-import faker from 'faker';
 import moment from 'moment';
 import ReportCategoryController from '../controllers/ReportCategoryController';
 import ReportServiceController from '../controllers/ReportServiceController';

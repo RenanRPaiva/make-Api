@@ -9,7 +9,7 @@ const sequelize = new Sequelize(
   }
 );
 
-mongoose.connect("mongodb://localhost:27017/report-database")
+mongoose.connect(`mongodb://${process.env.DB_HOST}:${process.env.MG_PORT}/${process.env.MONGO_DB}`)
 
 const mongooseDb = mongoose.connection;
 
