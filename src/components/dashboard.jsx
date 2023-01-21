@@ -58,7 +58,7 @@ export const optionsUsersQuantity = {
     },
     title: {
       display: true,
-      text: 'Usuários por mês',
+      text: 'Usuários por dia',
     },
   },
 };

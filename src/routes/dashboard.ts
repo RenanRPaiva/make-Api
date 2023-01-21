@@ -1,20 +1,25 @@
 import * as express from 'express';
 import faker from 'faker';
+import moment from 'moment';
 import ReportCategoryController from '../controllers/ReportCategoryController';
 import ReportServiceController from '../controllers/ReportServiceController';
+import ReportUserController from '../controllers/ReportUserController';
 
 const dashboard = express.Router();
 
-dashboard.get('/users/quantity', (req, res)=> {
-    const labels: Array<string> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-   
+dashboard.get('/users/quantity', async (req, res)=> {
+  const userCtrl = new ReportUserController();
+  const result = await userCtrl.get(req.query);    
+  const data = result.map(r => r.sum);
+  let labels: any = result.map((r) => moment(r._id).format('DD/MM/YYYY')); 
+  
     res.statusCode = 200;
     res.json({ 
-        labels: labels,
+        labels,
         datasets:[
           {
             label: 'Usuários',
-            data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
+            data,
             backgroundColor: 'rgba(255, 99, 132, 0.5)',
           }
         ]
